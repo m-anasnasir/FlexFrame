@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FlexFrame Pro — Upload your web project and test responsiveness across 18+ real device viewports with automated audit scoring.">
+  <title>FlexFrame Pro — Multi-Device Responsive Testing Studio</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+
+<!-- ═══ DRAG OVERLAY ═══════════════════════════════════════════════════════ -->
+<div class="drag-overlay" id="dragOverlay">
+  <div class="drag-box">
+    <div class="drag-box-icon">📂</div>
+    <h2>Drop to Load Project</h2>
+    <p>Release HTML files or a .zip archive — parsed instantly in your browser</p>
+  </div>
+</div>
+
+<!-- ═══ UPLOAD MODAL ═══════════════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="uploadModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Load a Project</h3>
+      <button class="btn btn-ghost btn-icon" id="closeModal">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <label class="upload-option primary">
+        <div class="upload-option-icon">📦</div>
+        <div class="upload-option-info">
+          <div class="upload-option-title">Upload ZIP Archive</div>
+          <div class="upload-option-desc">Select a .zip file — HTML, CSS, JS &amp; assets all supported</div>
+        </div>
+        <span style="font-size: 1rem; color: var(--text-tertiary);">→</span>
+        <input type="file" id="zipInput" accept=".zip" style="display:none">
+      </label>
+
+      <label class="upload-option">
+        <div class="upload-option-icon">📁</div>
+        <div class="upload-option-info">
+          <div class="upload-option-title">Select Project Folder</div>
+          <div class="upload-option-desc">Upload an entire folder with all linked resources</div>
+        </div>
+        <span style="font-size: 1rem; color: var(--text-tertiary);">→</span>
+        <input type="file" id="folderInput" webkitdirectory directory style="display:none">
+      </label>
+
+      <label class="upload-option">
+        <div class="upload-option-icon">📄</div>
+        <div class="upload-option-info">
+          <div class="upload-option-title">Select Individual Files</div>
+          <div class="upload-option-desc">Pick HTML, CSS, JS or image files manually</div>
+        </div>
+        <span style="font-size: 1rem; color: var(--text-tertiary);">→</span>
+        <input type="file" id="fileInput" multiple accept=".html,.css,.js,.png,.jpg,.svg,.json" style="display:none">
+      </label>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOAST CONTAINER ════════════════════════════════════════════════════ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══ APP SHELL ══════════════════════════════════════════════════════════ -->
+<div class="app-shell">
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="brand">
+      <img src="assets/logo.jpg" alt="Logo" class="brand-icon">
+      <span class="brand-name">FlexFrame</span>
+      <span class="version-badge">Pro Live</span>
+    </div>
+
+    <div class="url-bar">
+      <span class="url-bar-icon">🌐</span>
+      <input type="text" id="urlInput" placeholder="https://your-website.com   — press Enter to test">
+    </div>
+
+    <div class="header-right">
+      <button class="btn btn-secondary btn-md" id="btnUploadProject">
+        📁 Upload Project
+      </button>
+      <button class="btn btn-primary btn-md" id="btnRunAudit">
+        ⚡ Run Audit
+      </button>
+    </div>
+  </header>
+
+  <!-- TAB BAR -->
+  <nav class="tab-bar">
+    <button class="tab-item active" data-tab="studio">
+      <span class="tab-icon">📱</span> Device Studio
+    </button>
+    <button class="tab-item" data-tab="audit">
+      <span class="tab-icon">📊</span> Audit Report
+    </button>
+    <button class="tab-item" data-tab="breakpoints">
+      <span class="tab-icon">📐</span> Breakpoints
+    </button>
+    <button class="tab-item" data-tab="editor">
+      <span class="tab-icon">💻</span> Live Editor
+    </button>
+    <button class="tab-item" data-tab="demos">
+      <span class="tab-icon">🚀</span> Sample Projects
+    </button>
+  </nav>
+
+  <!-- ══ WORKSPACE ══════════════════════════════════════════════════════════ -->
+  <div class="workspace">
+
+    <!-- ── TAB: DEVICE STUDIO ─────────────────────────────────────────────── -->
+    <div class="tab-panel active" id="tab-studio">
+
+      <!-- Device Toolbar -->
+      <div class="device-toolbar">
+        <!-- Project name -->
+        <div class="toolbar-label" id="projectNameDisplay" style="color: var(--accent-cyan); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Modern SaaS Demo</div>
+
+        <div class="toolbar-separator"></div>
+
+        <!-- Dimensions + breakpoint -->
+        <div class="info-pill pill-dim" id="dimDisplay">393 × 852 px</div>
+        <div class="info-pill pill-bp" id="bpDisplay">XS · Mobile</div>
+
+        <div class="toolbar-separator"></div>
+
+        <!-- Device category filter -->
+        <div class="btn-group" id="categoryFilter">
+          <button class="btn btn-sm btn-ghost active" data-cat="all">All</button>
+          <button class="btn btn-sm btn-ghost" data-cat="mobile">📱 Mobile</button>
+          <button class="btn btn-sm btn-ghost" data-cat="tablet">📑 Tablet</button>
+          <button class="btn btn-sm btn-ghost" data-cat="laptop">💻 Laptop</button>
+          <button class="btn btn-sm btn-ghost" data-cat="desktop">🖥️ Desktop</button>
+        </div>
+
+        <!-- Device Select -->
+        <select id="deviceSelect" class="select-styled"></select>
+
+        <div class="toolbar-separator"></div>
+
+        <!-- Controls -->
+        <button class="btn btn-sm btn-ghost" id="btnOrientation" title="Rotate">🔄</button>
+        <button class="btn btn-sm btn-ghost active" id="btnBezel" title="Toggle Bezel">🖼️</button>
+
+        <!-- Custom size -->
+        <div class="dim-input-group">
+          <input type="number" id="customW" placeholder="W" value="393">
+          <span class="sep">×</span>
+          <input type="number" id="customH" placeholder="H" value="852">
+          <button class="btn btn-sm btn-cyan" id="btnSetCustom" style="border-radius:6px; height:24px; padding: 0 8px; font-size:0.72rem;">Set</button>
+        </div>
+
+        <!-- Zoom -->
+        <select id="zoomSelect" class="select-styled">
+          <option value="1">100%</option>
+          <option value="0.85">85%</option>
+          <option value="0.75">75%</option>
+          <option value="0.6">60%</option>
+          <option value="0.5">50%</option>
+        </select>
+
+        <div class="toolbar-separator"></div>
+
+        <!-- View mode -->
+        <div class="btn-group">
+          <button class="btn btn-sm btn-ghost active" id="btnSingle">Single</button>
+          <button class="btn btn-sm btn-ghost" id="btnMatrix">Matrix</button>
+        </div>
+      </div>
+
+      <!-- Studio body: canvas + sidebar -->
+      <div class="studio-panel" style="flex:1; overflow:hidden; display:flex;">
+
+        <!-- Canvas -->
+        <div class="canvas-area" id="canvasArea">
+          <!-- Single device frame -->
+          <div id="singleContainer"></div>
+          <!-- Matrix grid -->
+          <div class="matrix-area" id="matrixArea" style="display:none; width:100%; padding:0;">
+            <div class="matrix-grid" id="matrixGrid"></div>
+          </div>
+        </div>
+
+        <!-- Right Properties Sidebar -->
+        <aside class="properties-sidebar">
+
+          <!-- Audit quick score -->
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Responsiveness Score</div>
+            <div class="score-ring-container">
+              <div class="score-ring">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="12"/>
+                  <circle id="scoreRingArc" cx="60" cy="60" r="52" fill="none"
+                    stroke="url(#scoreGrad)" stroke-width="12"
+                    stroke-linecap="round"
+                    stroke-dasharray="327" stroke-dashoffset="0"
+                    style="transition: stroke-dashoffset 0.7s cubic-bezier(0.16,1,0.3,1)"/>
+                  <defs>
+                    <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#4f8fff"/>
+                      <stop offset="100%" stop-color="#22c55e"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div class="score-ring-value" id="sidebarScore" style="color: var(--color-success);">100%</div>
+              </div>
+              <span class="score-label" id="sidebarGrade">✅ Excellent</span>
+            </div>
+          </div>
+
+          <!-- Quick stats -->
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Quick Checks</div>
+            <div class="stat-row">
+              <span class="stat-label">Viewport Meta</span>
+              <span class="stat-value stat-ok" id="sqViewport">Present</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Media Queries</span>
+              <span class="stat-value stat-ok" id="sqMedia">Detected</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Fluid Images</span>
+              <span class="stat-value stat-ok" id="sqImages">OK</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Touch Targets</span>
+              <span class="stat-value stat-ok" id="sqTouch">OK</span>
+            </div>
+          </div>
+
+          <!-- Device Info -->
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Active Device</div>
+            <div class="device-info-row">
+              <div class="device-info-item"><span class="label">Name</span><span class="value" id="devName">iPhone 15 Pro</span></div>
+              <div class="device-info-item"><span class="label">OS</span><span class="value" id="devOS">iOS</span></div>
+              <div class="device-info-item"><span class="label">Width</span><span class="value" id="devW">393px</span></div>
+              <div class="device-info-item"><span class="label">Height</span><span class="value" id="devH">852px</span></div>
+              <div class="device-info-item"><span class="label">DPR</span><span class="value" id="devDPR">3.0×</span></div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="sidebar-section" style="margin-top:auto; border-bottom:none;">
+            <button class="btn btn-secondary btn-md" id="btnExportReport" style="width:100%; justify-content:center; margin-bottom: 8px;">
+              📥 Export Report
+            </button>
+            <button class="btn btn-ghost btn-md" id="btnGoToEditor" style="width:100%; justify-content:center; font-size:0.82rem; color: var(--text-tertiary);">
+              💻 Open Live Editor
+            </button>
+          </div>
+
+        </aside>
+      </div>
+
+    </div><!-- /tab-studio -->
+
+    <!-- ── TAB: AUDIT REPORT ──────────────────────────────────────────────── -->
+    <div class="tab-panel" id="tab-audit">
+      <div class="audit-panel" id="auditPanel">
+
+        <!-- Hero score card -->
+        <div class="audit-hero">
+          <div class="score-circle">
+            <div class="score-circle-bg" id="auditCircleBg" style="--pct:100;"></div>
+            <div class="score-circle-inner">
+              <span class="score-number" id="auditScoreNum" style="color: var(--color-success);">100</span>
+              <span class="score-unit">/ 100</span>
+            </div>
+          </div>
+
+          <div class="audit-hero-content">
+            <h2>Responsiveness Audit</h2>
+            <p>Automated checks covering viewport meta tags, container overflows, CSS media queries, touch target sizes, and fluid image rules.</p>
+            <span class="btn btn-ghost" id="auditGradeBadge" style="border:1px solid; cursor:default; align-self:flex-start;">✅ Excellent</span>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap: 8px;">
+            <button class="btn btn-primary btn-md" id="btnReRunAudit">⚡ Re-run Audit</button>
+            <button class="btn btn-secondary btn-md" id="btnExportAudit">📥 Export HTML</button>
+          </div>
+        </div>
+
+        <!-- Metrics row -->
+        <div class="audit-metrics-row">
+          <div class="metric-card">
+            <div class="metric-card-label">Viewport Meta</div>
+            <div class="metric-card-value" id="metViewport" style="color: var(--color-success);">✓</div>
+            <div class="metric-card-sub" id="metViewportSub">Tag found</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card-label">Media Queries</div>
+            <div class="metric-card-value" id="metMQ" style="color: var(--accent-purple);">0</div>
+            <div class="metric-card-sub">Breakpoints declared</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card-label">Overflow Issues</div>
+            <div class="metric-card-value" id="metOverflow" style="color: var(--color-success);">0</div>
+            <div class="metric-card-sub">Fixed-width violations</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-card-label">Issues Found</div>
+            <div class="metric-card-value" id="metIssues" style="color: var(--color-success);">0</div>
+            <div class="metric-card-sub">Total diagnostics</div>
+          </div>
+        </div>
+
+        <!-- Issue cards -->
+        <div class="issues-section">
+          <h3>Diagnostic Findings</h3>
+          <div id="issuesList"></div>
+        </div>
+
+      </div>
+    </div><!-- /tab-audit -->
+
+    <!-- ── TAB: BREAKPOINTS ───────────────────────────────────────────────── -->
+    <div class="tab-panel" id="tab-breakpoints">
+      <div class="breakpoints-panel" id="bpPanel">
+        <div style="margin-bottom: 24px;">
+          <h2 class="font-display" style="font-size:1.5rem; font-weight:800; margin-bottom:6px;">CSS Breakpoint Analysis</h2>
+          <p style="color: var(--text-secondary); font-size:0.9rem;">Media query thresholds extracted from your project files.</p>
+        </div>
+        <!-- Ruler -->
+        <div class="bp-ruler">
+          <div class="bp-ruler-track"><div class="bp-ruler-fill" style="width:75%"></div></div>
+          <div class="bp-markers">
+            <div class="bp-marker-item"><div class="bp-marker-val">320px</div><div class="bp-marker-label">Tiny</div></div>
+            <div class="bp-marker-item"><div class="bp-marker-val">576px</div><div class="bp-marker-label">Mobile</div></div>
+            <div class="bp-marker-item"><div class="bp-marker-val">768px</div><div class="bp-marker-label">Tablet</div></div>
+            <div class="bp-marker-item"><div class="bp-marker-val">992px</div><div class="bp-marker-label">Laptop</div></div>
+            <div class="bp-marker-item"><div class="bp-marker-val">1200px</div><div class="bp-marker-label">Desktop</div></div>
+            <div class="bp-marker-item"><div class="bp-marker-val">1400px</div><div class="bp-marker-label">Wide</div></div>
+          </div>
+        </div>
+        <h3 style="font-family:var(--font-display); font-size:1rem; font-weight:700; margin-bottom:12px;">Detected @media Rules</h3>
+        <div class="mq-list" id="mqList">
+          <div style="color: var(--text-tertiary); font-size:0.88rem; padding: 16px;">Load a project to analyse breakpoints.</div>
+        </div>
+      </div>
+    </div><!-- /tab-breakpoints -->
+
+    <!-- ── TAB: LIVE EDITOR ───────────────────────────────────────────────── -->
+    <div class="tab-panel" id="tab-editor">
+      <div class="editor-panel">
+        <div class="editor-shell" id="editorContainer">
+          <!-- Mounted by editor.js -->
+        </div>
+      </div>
+    </div><!-- /tab-editor -->
+
+    <!-- ── TAB: DEMOS ─────────────────────────────────────────────────────── -->
+    <div class="tab-panel" id="tab-demos">
+      <div class="demos-panel">
+
+        <div class="demos-hero">
+          <h1>Sample Projects</h1>
+          <p>Click any project below to load it instantly into the Device Studio and audit it automatically.</p>
+        </div>
+
+        <div class="demos-grid">
+
+          <div class="demo-card">
+            <div class="demo-card-preview demo-card-preview-responsive">
+              ⚡
+              <span class="demo-score-badge good">Score 100%</span>
+            </div>
+            <div class="demo-card-info">
+              <h3>Modern SaaS Landing Page</h3>
+              <p>Fully responsive layout with flexbox navigation, fluid pricing cards, and CSS custom properties.</p>
+            </div>
+            <div class="demo-card-footer">
+              <div class="demo-tags">
+                <span class="demo-tag">Flexbox</span>
+                <span class="demo-tag">Grid</span>
+                <span class="demo-tag">Media Queries</span>
+              </div>
+              <button class="btn btn-sm btn-primary demo-load-btn" data-demo="saas">Load →</button>
+            </div>
+          </div>
+
+          <div class="demo-card">
+            <div class="demo-card-preview demo-card-preview-ecommerce">
+              🛒
+              <span class="demo-score-badge good">Score 98%</span>
+            </div>
+            <div class="demo-card-info">
+              <h3>E-Commerce Storefront</h3>
+              <p>Adaptive product grid with a mobile sticky bottom navigation bar and 2-col mobile layout.</p>
+            </div>
+            <div class="demo-card-footer">
+              <div class="demo-tags">
+                <span class="demo-tag">Grid</span>
+                <span class="demo-tag">Mobile Nav</span>
+              </div>
+              <button class="btn btn-sm btn-primary demo-load-btn" data-demo="ecommerce">Load →</button>
+            </div>
+          </div>
+
+          <div class="demo-card">
+            <div class="demo-card-preview demo-card-preview-legacy">
+              ❌
+              <span class="demo-score-badge bad">Score 32%</span>
+            </div>
+            <div class="demo-card-info">
+              <h3>Non-Responsive Legacy Site</h3>
+              <p>Intentionally broken: fixed 1200px container, missing viewport meta, tiny touch targets — ideal for testing the audit engine.</p>
+            </div>
+            <div class="demo-card-footer">
+              <div class="demo-tags">
+                <span class="demo-tag">Fixed Width</span>
+                <span class="demo-tag">No Meta</span>
+              </div>
+              <button class="btn btn-sm btn-primary demo-load-btn" data-demo="legacy">Load →</button>
+            </div>
+          </div>
+
+          <div class="demo-card">
+            <div class="demo-card-preview demo-card-preview-portfolio">
+              🎨
+              <span class="demo-score-badge good">Score 96%</span>
+            </div>
+            <div class="demo-card-info">
+              <h3>Creative Developer Portfolio</h3>
+              <p>Glassmorphism dark design with responsive CSS Grid project showcase and mobile hidden navigation.</p>
+            </div>
+            <div class="demo-card-footer">
+              <div class="demo-tags">
+                <span class="demo-tag">Dark Mode</span>
+                <span class="demo-tag">Glass</span>
+              </div>
+              <button class="btn btn-sm btn-primary demo-load-btn" data-demo="portfolio">Load →</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /tab-demos -->
+
+  </div><!-- /workspace -->
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <div class="status-item">
+      <span class="status-dot"></span>
+      <span>Live Preview Active</span>
+    </div>
+    <div style="display:flex; gap: 20px; align-items:center;">
+      <div class="status-item" id="statusSource">Source: Demo</div>
+      <div class="status-item" id="statusFiles">1 file loaded</div>
+      <div class="status-item">FlexFrame Pro v2.0</div>
+    </div>
+  </div>
+
+</div><!-- /app-shell -->
+
+<!-- ═══ Scripts ═════════════════════════════════════════════════════════════ -->
+<script src="js/demos.js"></script>
+<script src="js/device-manager.js"></script>
+<script src="js/file-loader.js"></script>
+<script src="js/audit-engine.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/exporter.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
