@@ -107,25 +107,102 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ── Device select ──────────────────────────────────────────────────── */
+  /* ── Device select & navigation ─────────────────────────────────────── */
   document.getElementById('deviceSelect')?.addEventListener('change', e => {
     window.deviceManager.setDevice(e.target.value);
   });
+  document.getElementById('btnPrevDevice')?.addEventListener('click', () => {
+    window.deviceManager.prevDevice();
+  });
+  document.getElementById('btnNextDevice')?.addEventListener('click', () => {
+    window.deviceManager.nextDevice();
+  });
 
   /* ── Toolbar controls ───────────────────────────────────────────────── */
-  document.getElementById('btnOrientation')?.addEventListener('click', () => window.deviceManager.toggleOrientation());
+  document.getElementById('btnOrientation')?.addEventListener('click', () => {
+    window.deviceManager.toggleOrientation();
+  });
   document.getElementById('btnBezel')?.addEventListener('click', function() {
     window.deviceManager.toggleBezel();
     this.classList.toggle('active', window.deviceManager.showBezel);
   });
-  document.getElementById('zoomSelect')?.addEventListener('change', e => window.deviceManager.setScale(parseFloat(e.target.value)));
+
+  /* ── Auto-fit & Zoom controls ───────────────────────────────────────── */
+  document.getElementById('btnFitScreen')?.addEventListener('click', () => {
+    window.deviceManager.setAutoFit(true);
+    showToast('Auto-Fit to Screen enabled 🔍', 'info');
+  });
+
+  document.getElementById('btnZoomIn')?.addEventListener('click', () => {
+    window.deviceManager.zoomIn();
+    showToast(`Zoom: ${Math.round(window.deviceManager.scale * 100)}%`, 'info');
+  });
+
+  document.getElementById('btnZoomOut')?.addEventListener('click', () => {
+    window.deviceManager.zoomOut();
+    showToast(`Zoom: ${Math.round(window.deviceManager.scale * 100)}%`, 'info');
+  });
+
+  document.getElementById('zoomSelect')?.addEventListener('change', e => {
+    if (e.target.value === 'fit') {
+      window.deviceManager.setAutoFit(true);
+      showToast('Auto-Fit to Screen enabled 🔍', 'info');
+    } else {
+      window.deviceManager.setScale(parseFloat(e.target.value));
+      showToast(`Zoom: ${Math.round(window.deviceManager.scale * 100)}%`, 'info');
+    }
+  });
+
+  /* ── Custom dimension inputs ────────────────────────────────────────── */
+  const dimInputGroup = document.getElementById('dimInputGroup');
+  const btnToggleCustom = document.getElementById('btnToggleCustom');
+
+  btnToggleCustom?.addEventListener('click', () => {
+    const isVisible = dimInputGroup?.classList.toggle('show');
+    btnToggleCustom.classList.toggle('active', isVisible);
+  });
 
   document.getElementById('btnSetCustom')?.addEventListener('click', () => {
     const w = parseInt(document.getElementById('customW')?.value, 10);
     const h = parseInt(document.getElementById('customH')?.value, 10);
-    if (w && h) window.deviceManager.setCustomDimensions(w, h);
+    if (w && h) {
+      window.deviceManager.setCustomDimensions(w, h);
+      showToast(`Custom size set: ${w}×${h}px ⚙️`, 'success');
+    }
   });
 
-  /* View toggle */
+  /* ── Sidebar drawer toggle (Mobile & Desktop) ───────────────────────── */
+  const propertiesSidebar = document.getElementById('propertiesSidebar');
+  const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+  const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+  const btnCloseSidebar = document.getElementById('btnCloseSidebar');
+
+  function toggleSidebar(forceOpen) {
+    if (!propertiesSidebar) return;
+    const isMobile = window.innerWidth < 1024;
+    const shouldOpen = forceOpen !== undefined
+      ? forceOpen
+      : (isMobile ? !propertiesSidebar.classList.contains('open') : propertiesSidebar.classList.contains('collapsed'));
+
+    if (isMobile) {
+      propertiesSidebar.classList.toggle('open', shouldOpen);
+      sidebarBackdrop?.classList.toggle('open', shouldOpen);
+    } else {
+      propertiesSidebar.classList.toggle('collapsed', !shouldOpen);
+    }
+    btnToggleSidebar?.classList.toggle('active', shouldOpen);
+
+    // If auto-fit is active, update frame after layout transition
+    setTimeout(() => {
+      if (window.deviceManager.isAutoFit) renderStudio();
+    }, 220);
+  }
+
+  btnToggleSidebar?.addEventListener('click', () => toggleSidebar());
+  btnCloseSidebar?.addEventListener('click', () => toggleSidebar(false));
+  sidebarBackdrop?.addEventListener('click', () => toggleSidebar(false));
+
+  /* ── View mode toggle ────────────────────────────────────────────────── */
   document.getElementById('btnSingle')?.addEventListener('click', function() {
     window.deviceManager.setViewMode('single');
     this.classList.add('active');
@@ -137,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btnSingle')?.classList.remove('active');
   });
 
-  /* Sidebar action buttons */
+  /* ── Sidebar action buttons ─────────────────────────────────────────── */
   document.getElementById('btnGoToEditor')?.addEventListener('click', () => switchTab('editor'));
   document.getElementById('btnExportReport')?.addEventListener('click', () => window.exporter.exportAuditReportHTML());
   document.getElementById('btnExportAudit')?.addEventListener('click', () => window.exporter.exportAuditReportHTML());
@@ -150,6 +227,51 @@ document.addEventListener('DOMContentLoaded', () => {
       window.fileLoader.loadDemo(btn.dataset.demo);
       switchTab('studio');
     });
+  });
+
+  /* ── Global keyboard shortcuts ───────────────────────────────────────── */
+  window.addEventListener('keydown', e => {
+    const tag = e.target.tagName?.toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+    if (e.key === 'f' || e.key === 'F') {
+      e.preventDefault();
+      window.deviceManager.toggleAutoFit();
+      showToast(window.deviceManager.isAutoFit ? 'Auto-Fit Enabled 🔍' : 'Auto-Fit Disabled', 'info');
+    } else if (e.key === 'r' || e.key === 'R') {
+      e.preventDefault();
+      window.deviceManager.toggleOrientation();
+      showToast(`Orientation: ${window.deviceManager.isLandscape ? 'Landscape' : 'Portrait'} 🔄`, 'info');
+    } else if (e.key === 'b' || e.key === 'B') {
+      e.preventDefault();
+      window.deviceManager.toggleBezel();
+      document.getElementById('btnBezel')?.classList.toggle('active', window.deviceManager.showBezel);
+      showToast(`Frame: ${window.deviceManager.showBezel ? 'On' : 'Off'} 🖼️`, 'info');
+    } else if (e.key === '+' || e.key === '=') {
+      e.preventDefault();
+      window.deviceManager.zoomIn();
+    } else if (e.key === '-' || e.key === '_') {
+      e.preventDefault();
+      window.deviceManager.zoomOut();
+    } else if (e.key === '0') {
+      e.preventDefault();
+      window.deviceManager.setScale(1.0);
+      showToast('Zoom: 100% (Actual)', 'info');
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      window.deviceManager.prevDevice();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      window.deviceManager.nextDevice();
+    } else if (e.key >= '1' && e.key <= '5') {
+      const tabs = ['studio', 'audit', 'breakpoints', 'editor', 'demos'];
+      const targetTab = tabs[parseInt(e.key, 10) - 1];
+      if (targetTab) {
+        e.preventDefault();
+        switchTab(targetTab);
+      }
+    }
   });
 
   /* ── Subscribe to state changes ─────────────────────────────────────── */
@@ -178,6 +300,62 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast(`"${window.fileLoader.currentProjectName}" loaded`, 'success');
   }
 
+  /* ── Canvas Auto-Fit Resize Observer ────────────────────────────────── */
+  let resizeDebounce = null;
+  const canvasAreaEl = document.getElementById('canvasArea');
+  if (canvasAreaEl && window.ResizeObserver) {
+    const ro = new ResizeObserver(() => {
+      if (window.deviceManager.isAutoFit && window.deviceManager.viewMode === 'single') {
+        if (resizeDebounce) cancelAnimationFrame(resizeDebounce);
+        resizeDebounce = requestAnimationFrame(() => renderStudio());
+      }
+    });
+    ro.observe(canvasAreaEl);
+  }
+  window.addEventListener('resize', () => {
+    if (window.deviceManager.isAutoFit && window.deviceManager.viewMode === 'single') {
+      renderStudio();
+    }
+  });
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     DYNAMIC AUTO-FIT SCALE CALCULATION
+  ═══════════════════════════════════════════════════════════════════════ */
+  function calculateFitScale(dims, dev, showBezel) {
+    const canvasArea = document.getElementById('canvasArea');
+    if (!canvasArea) return 1.0;
+
+    const cw = canvasArea.clientWidth;
+    const ch = canvasArea.clientHeight;
+    if (cw <= 0 || ch <= 0) return 1.0;
+
+    // Responsive padding inside canvas area
+    const isNarrow = window.innerWidth < 768;
+    const padX = isNarrow ? 24 : 56;
+    const padY = isNarrow ? 28 : 64;
+
+    const availW = Math.max(120, cw - padX);
+    const availH = Math.max(120, ch - padY);
+
+    const hasBezel = showBezel && dev.hasBezel;
+    const bezelExtraW = hasBezel ? 40 : 0;
+    const bezelExtraH = hasBezel ? 40 : 0;
+    const labelExtraH = 50; // device-label + gap
+
+    const totalW = dims.width + bezelExtraW;
+    const totalH = dims.height + bezelExtraH + labelExtraH;
+
+    const scaleX = availW / totalW;
+    const scaleY = availH / totalH;
+
+    let fitScale = Math.min(scaleX, scaleY);
+    // Allow scaling down to 0.08 and cap at 1.0 for comfortable viewing
+    fitScale = Math.max(0.08, Math.min(1.0, fitScale));
+
+    // Floor to 2 decimal places to strictly prevent any 1px overflow
+    return Math.floor(fitScale * 100) / 100;
+  }
+
   /* ═══════════════════════════════════════════════════════════════════════
      RENDER STUDIO
   ═══════════════════════════════════════════════════════════════════════ */
@@ -193,6 +371,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const bp = dm.getBreakpointCategory(dims.width);
     const bpEl = document.getElementById('bpDisplay');
     if (bpEl) bpEl.textContent = `${bp.code} · ${dev.category || 'custom'}`;
+
+    /* Update custom inputs */
+    const cwInput = document.getElementById('customW');
+    const chInput = document.getElementById('customH');
+    if (cwInput && document.activeElement !== cwInput) cwInput.value = dims.width;
+    if (chInput && document.activeElement !== chInput) chInput.value = dims.height;
 
     /* Update sidebar device info */
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
@@ -223,28 +407,48 @@ document.addEventListener('DOMContentLoaded', () => {
     if (matrixArea) matrixArea.style.display = 'none';
 
     const dm = window.deviceManager;
-    const scale = dm.scale;
     const showBezel = dm.showBezel;
+
+    let scale = dm.scale;
+    if (dm.isAutoFit) {
+      scale = calculateFitScale(dims, dev, showBezel);
+      dm.scale = scale;
+    }
+
+    const hasBezel = showBezel && dev.hasBezel;
+    const bezelExtraW = hasBezel ? 40 : 0;
+    const bezelExtraH = hasBezel ? 40 : 0;
+    const labelExtraH = 50;
+
+    const totalUnscaledW = dims.width + bezelExtraW;
+    const totalUnscaledH = dims.height + bezelExtraH + labelExtraH;
+
+    const scaledW = Math.max(1, Math.round(totalUnscaledW * scale));
+    const scaledH = Math.max(1, Math.round(totalUnscaledH * scale));
+    const scalePct = Math.round(scale * 100);
 
     /* Build notch html */
     let notchHtml = '';
-    if (showBezel && dev.hasBezel) {
+    if (hasBezel) {
       if (dev.notchType === 'dynamic-island') notchHtml = '<div class="device-notch pill"></div>';
-      else if (dev.notchType === 'hole-punch')      notchHtml = '<div class="device-notch dot"></div>';
-      else if (dev.notchType === 'notch')           notchHtml = '<div class="device-notch bar"></div>';
+      else if (dev.notchType === 'hole-punch') notchHtml = '<div class="device-notch dot"></div>';
+      else if (dev.notchType === 'notch') notchHtml = '<div class="device-notch bar"></div>';
     }
 
     singleContainer.innerHTML = `
-      <div class="device-frame-wrapper" style="transform: scale(${scale}); transform-origin: center top;">
-        <div class="device-shell ${showBezel && dev.hasBezel ? '' : 'borderless'}">
-          ${notchHtml}
-          <div class="device-screen" style="width:${dims.width}px; height:${dims.height}px;">
-            <!-- iframe goes here -->
+      <div class="device-frame-scaler" style="width:${scaledW}px; height:${scaledH}px;">
+        <div class="device-frame-wrapper" style="width:${totalUnscaledW}px; height:${totalUnscaledH}px; transform: scale(${scale}); transform-origin: top left;">
+          <div class="device-shell ${hasBezel ? '' : 'borderless'}">
+            ${notchHtml}
+            <div class="device-screen" style="width:${dims.width}px; height:${dims.height}px;">
+              <!-- iframe goes here -->
+            </div>
           </div>
-        </div>
-        <div class="device-label">
-          <span class="dot-live"></span>
-          ${dev.icon} ${dev.name} &nbsp;·&nbsp; ${dims.width} × ${dims.height}
+          <div class="device-label">
+            <span class="dot-live"></span>
+            ${dev.icon} ${dev.name} &nbsp;·&nbsp; ${dims.width} × ${dims.height}
+            <span class="device-scale-tag ${dm.isAutoFit ? 'fit' : ''}">${scalePct}% ${dm.isAutoFit ? '(Auto-Fit)' : ''}</span>
+          </div>
         </div>
       </div>
     `;
@@ -255,6 +459,28 @@ document.addEventListener('DOMContentLoaded', () => {
     iframe.style.height = dims.height + 'px';
     injectContent(iframe);
     singleContainer.querySelector('.device-screen').appendChild(iframe);
+
+    syncZoomUI(scale, dm.isAutoFit);
+  }
+
+  function syncZoomUI(scale, isAutoFit) {
+    const btnFit = document.getElementById('btnFitScreen');
+    if (btnFit) btnFit.classList.toggle('active', isAutoFit);
+
+    const zoomSel = document.getElementById('zoomSelect');
+    if (zoomSel) {
+      const fitOpt = zoomSel.querySelector('option[value="fit"]');
+      if (fitOpt) {
+        fitOpt.textContent = `🔍 Fit (${Math.round(scale * 100)}%)`;
+      }
+      if (isAutoFit) {
+        zoomSel.value = 'fit';
+      } else {
+        const strVal = String(scale);
+        const match = [...zoomSel.options].find(o => o.value === strVal || Math.abs(parseFloat(o.value) - scale) < 0.02);
+        if (match) zoomSel.value = match.value;
+      }
+    }
   }
 
   function renderMatrix() {
@@ -271,8 +497,13 @@ document.addEventListener('DOMContentLoaded', () => {
     else devices = devices.filter(d => ['mobile', 'tablet'].includes(d.category) || d.id === 'macbook-air-13');
 
     matrixGrid.innerHTML = '';
+    const containerW = matrixGrid.clientWidth || window.innerWidth;
+    const isMobile = window.innerWidth < 640;
+    const targetW = isMobile ? Math.min(containerW - 32, 340) : 310;
+
     devices.forEach(dev => {
-      const scale = Math.min(0.62, 280 / dev.width);
+      const scale = Math.min(0.65, (targetW - 24) / dev.width);
+      const visW = Math.round(dev.width * scale);
       const visH = Math.round(dev.height * scale);
       const card = document.createElement('div');
       card.className = 'matrix-card';
@@ -282,17 +513,19 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="matrix-dim-badge">${dev.width}×${dev.height}</span>
         </div>
         <div class="matrix-viewport" style="height:${Math.max(visH + 32, 220)}px;">
-          <!-- iframe -->
+          <div style="width:${visW}px; height:${visH}px; overflow:hidden; position:relative; margin:auto; border-radius:6px; box-shadow:0 4px 16px rgba(0,0,0,0.4);">
+            <div style="width:${dev.width}px; height:${dev.height}px; transform:scale(${scale}); transform-origin:top left; position:absolute; left:0; top:0;">
+              <!-- iframe -->
+            </div>
+          </div>
         </div>
       `;
       const iframe = document.createElement('iframe');
       iframe.className = 'matrix-iframe';
       iframe.style.width = dev.width + 'px';
       iframe.style.height = dev.height + 'px';
-      iframe.style.transform = `scale(${scale})`;
-      iframe.style.transformOrigin = 'top center';
       injectContent(iframe);
-      card.querySelector('.matrix-viewport').appendChild(iframe);
+      card.querySelector('.matrix-viewport div div').appendChild(iframe);
       matrixGrid.appendChild(card);
     });
   }
@@ -330,6 +563,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (scoreEl) { scoreEl.textContent = report.score + '%'; scoreEl.style.color = report.grade.color; }
     const gradeEl = document.getElementById('sidebarGrade');
     if (gradeEl) gradeEl.textContent = report.grade.icon + ' ' + report.grade.label;
+
+    /* Toolbar score badge update */
+    const scoreBadge = document.getElementById('toolbarScoreBadge');
+    if (scoreBadge) {
+      scoreBadge.textContent = report.score + '%';
+      scoreBadge.style.borderColor = report.grade.color;
+      scoreBadge.style.color = report.grade.color;
+    }
 
     /* Quick stat pills */
     function setStat(id, text, kind) {

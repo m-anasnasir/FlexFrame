@@ -23,12 +23,15 @@ Built entirely with standard web technologies (HTML5, CSS3, ES6 JavaScript), it 
 ## ✨ Key Features
 
 ### 📱 1. Multi-Device Studio
+- **Dynamic Auto-Fit to Screen**: Automatically calculates exact scaling so any device (from iPhone to 4K monitor) fits seamlessly on any user screen (smartphones, tablets, laptops, and wide monitors) without clipping or horizontal overflow.
 - **Accurate Viewport Simulation**: Real-world pixel dimensions, device aspect ratios, and Device Pixel Ratio (DPR) values.
 - **Hardware-Accurate Bezels & Notches**: Render viewports with realistic chassis bezels and notches (Dynamic Island, hole-punch cameras, top notches).
-- **Orientation Toggle**: Instantly flip between portrait and landscape modes with a single click.
-- **Zoom & Scaling**: Scale the canvas viewport from `50%` to `100%` to comfortably inspect large desktop viewports on smaller monitors.
+- **Orientation Toggle**: Instantly flip between portrait and landscape modes with a single click or `R` key.
+- **Precision Zoom Controls**: Quick `Fit`, `+`, `−`, and predefined zoom presets (`100%`, `85%`, `75%`, `60%`, `50%`, `33%`, `25%`).
+- **Device Navigation**: Instantly cycle through presets using `◀` / `▶` buttons or arrow keys.
 - **Custom Viewports**: Enter arbitrary custom width and height combinations (up to 4K resolution) on demand.
-- **Matrix View**: Simultaneously preview your layout across mobile, tablet, and desktop viewports side-by-side.
+- **Matrix View**: Simultaneously preview your layout across mobile, tablet, and desktop viewports side-by-side with adaptive card scaling.
+- **Responsive Drawer & Layout**: Full mobile/tablet UI support with slide-out specs drawer, touch-friendly tap targets, and 100dvh safe-area integration.
 
 ### ⚡ 2. Automated Responsiveness Audit Engine
 - **Weighted 0–100% Health Score**: Evaluates responsive quality based on industry standards and Google/Apple web guidelines.

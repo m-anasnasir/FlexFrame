@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="FlexFrame Pro — Upload your web project and test responsiveness across 18+ real device viewports with automated audit scoring.">
   <title>FlexFrame Pro — Multi-Device Responsive Testing Studio</title>
   <link rel="stylesheet" href="css/styles.css">
@@ -78,15 +78,19 @@
 
     <div class="url-bar">
       <span class="url-bar-icon">🌐</span>
-      <input type="text" id="urlInput" placeholder="https://your-website.com   — press Enter to test">
+      <input type="text" id="urlInput" placeholder="https://your-website.com — Enter to test">
     </div>
 
     <div class="header-right">
-      <button class="btn btn-secondary btn-md" id="btnUploadProject">
-        📁 Upload Project
+      <button class="btn btn-secondary btn-md" id="btnUploadProject" title="Upload Project (ZIP, Folder, or Files)">
+        📁 <span class="btn-text">Upload</span>
       </button>
-      <button class="btn btn-primary btn-md" id="btnRunAudit">
-        ⚡ Run Audit
+      <button class="btn btn-primary btn-md" id="btnRunAudit" title="Run Automated Responsiveness Audit">
+        ⚡ <span class="btn-text">Run Audit</span>
+      </button>
+      <button class="btn btn-ghost btn-md btn-sidebar-toggle" id="btnToggleSidebar" title="View Responsiveness Score & Device Specs">
+        📊 <span class="btn-text">Score</span>
+        <span class="score-pill-badge" id="toolbarScoreBadge">100%</span>
       </button>
     </div>
   </header>
@@ -94,19 +98,19 @@
   <!-- TAB BAR -->
   <nav class="tab-bar">
     <button class="tab-item active" data-tab="studio">
-      <span class="tab-icon">📱</span> Device Studio
+      <span class="tab-icon">📱</span> <span class="tab-label">Device Studio</span>
     </button>
     <button class="tab-item" data-tab="audit">
-      <span class="tab-icon">📊</span> Audit Report
+      <span class="tab-icon">📊</span> <span class="tab-label">Audit Report</span>
     </button>
     <button class="tab-item" data-tab="breakpoints">
-      <span class="tab-icon">📐</span> Breakpoints
+      <span class="tab-icon">📐</span> <span class="tab-label">Breakpoints</span>
     </button>
     <button class="tab-item" data-tab="editor">
-      <span class="tab-icon">💻</span> Live Editor
+      <span class="tab-icon">💻</span> <span class="tab-label">Live Editor</span>
     </button>
     <button class="tab-item" data-tab="demos">
-      <span class="tab-icon">🚀</span> Sample Projects
+      <span class="tab-icon">🚀</span> <span class="tab-label">Sample Projects</span>
     </button>
   </nav>
 
@@ -119,7 +123,7 @@
       <!-- Device Toolbar -->
       <div class="device-toolbar">
         <!-- Project name -->
-        <div class="toolbar-label" id="projectNameDisplay" style="color: var(--accent-cyan); max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Modern SaaS Demo</div>
+        <div class="toolbar-label" id="projectNameDisplay">Modern SaaS Demo</div>
 
         <div class="toolbar-separator"></div>
 
@@ -138,43 +142,61 @@
           <button class="btn btn-sm btn-ghost" data-cat="desktop">🖥️ Desktop</button>
         </div>
 
-        <!-- Device Select -->
-        <select id="deviceSelect" class="select-styled"></select>
+        <!-- Device Navigation & Select -->
+        <div class="device-selector-group">
+          <button class="btn btn-sm btn-ghost btn-icon-sm" id="btnPrevDevice" title="Previous Device (Left Arrow)">◀</button>
+          <select id="deviceSelect" class="select-styled" title="Choose Target Device"></select>
+          <button class="btn btn-sm btn-ghost btn-icon-sm" id="btnNextDevice" title="Next Device (Right Arrow)">▶</button>
+        </div>
 
         <div class="toolbar-separator"></div>
 
-        <!-- Controls -->
-        <button class="btn btn-sm btn-ghost" id="btnOrientation" title="Rotate">🔄</button>
-        <button class="btn btn-sm btn-ghost active" id="btnBezel" title="Toggle Bezel">🖼️</button>
+        <!-- Controls: Orientation & Bezel -->
+        <button class="btn btn-sm btn-ghost" id="btnOrientation" title="Rotate Device Orientation (R)">🔄 Rotate</button>
+        <button class="btn btn-sm btn-ghost active" id="btnBezel" title="Toggle Hardware Frame / Bezel (B)">🖼️ Frame</button>
 
-        <!-- Custom size -->
-        <div class="dim-input-group">
-          <input type="number" id="customW" placeholder="W" value="393">
-          <span class="sep">×</span>
-          <input type="number" id="customH" placeholder="H" value="852">
-          <button class="btn btn-sm btn-cyan" id="btnSetCustom" style="border-radius:6px; height:24px; padding: 0 8px; font-size:0.72rem;">Set</button>
+        <div class="toolbar-separator"></div>
+
+        <!-- Auto-Fit & Zoom Controls -->
+        <button class="btn btn-sm btn-cyan active" id="btnFitScreen" title="Auto-Fit Device to Screen (F)">🔍 Fit</button>
+
+        <div class="zoom-controls">
+          <button class="btn btn-sm btn-ghost btn-icon-sm" id="btnZoomOut" title="Zoom Out (-)">−</button>
+          <select id="zoomSelect" class="select-styled" title="Zoom / Scaling Level">
+            <option value="fit" selected>🔍 Fit to Screen</option>
+            <option value="1">100% (Actual)</option>
+            <option value="0.85">85%</option>
+            <option value="0.75">75%</option>
+            <option value="0.6">60%</option>
+            <option value="0.5">50%</option>
+            <option value="0.33">33%</option>
+            <option value="0.25">25%</option>
+          </select>
+          <button class="btn btn-sm btn-ghost btn-icon-sm" id="btnZoomIn" title="Zoom In (+)">+</button>
         </div>
 
-        <!-- Zoom -->
-        <select id="zoomSelect" class="select-styled">
-          <option value="1">100%</option>
-          <option value="0.85">85%</option>
-          <option value="0.75">75%</option>
-          <option value="0.6">60%</option>
-          <option value="0.5">50%</option>
-        </select>
+        <div class="toolbar-separator"></div>
+
+        <!-- Custom size toggle & inputs -->
+        <button class="btn btn-sm btn-ghost" id="btnToggleCustom" title="Set Custom Viewport Dimensions">⚙️ Custom</button>
+        <div class="dim-input-group" id="dimInputGroup">
+          <input type="number" id="customW" placeholder="W" value="393" title="Width in px">
+          <span class="sep">×</span>
+          <input type="number" id="customH" placeholder="H" value="852" title="Height in px">
+          <button class="btn btn-sm btn-cyan" id="btnSetCustom" style="border-radius:6px; height:24px; padding: 0 8px; font-size:0.72rem;">Set</button>
+        </div>
 
         <div class="toolbar-separator"></div>
 
         <!-- View mode -->
         <div class="btn-group">
-          <button class="btn btn-sm btn-ghost active" id="btnSingle">Single</button>
-          <button class="btn btn-sm btn-ghost" id="btnMatrix">Matrix</button>
+          <button class="btn btn-sm btn-ghost active" id="btnSingle" title="Single Device View">Single</button>
+          <button class="btn btn-sm btn-ghost" id="btnMatrix" title="Side-by-Side Matrix View">Matrix</button>
         </div>
       </div>
 
       <!-- Studio body: canvas + sidebar -->
-      <div class="studio-panel" style="flex:1; overflow:hidden; display:flex;">
+      <div class="studio-panel">
 
         <!-- Canvas -->
         <div class="canvas-area" id="canvasArea">
@@ -186,8 +208,17 @@
           </div>
         </div>
 
+        <!-- Backdrop overlay for mobile drawer -->
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
         <!-- Right Properties Sidebar -->
-        <aside class="properties-sidebar">
+        <aside class="properties-sidebar" id="propertiesSidebar">
+
+          <!-- Mobile Sidebar Header -->
+          <div class="sidebar-mobile-header">
+            <div class="sidebar-mobile-title">📊 Score & Device Specs</div>
+            <button class="btn btn-ghost btn-icon-sm" id="btnCloseSidebar" title="Close Sidebar">✕</button>
+          </div>
 
           <!-- Audit quick score -->
           <div class="sidebar-section">
@@ -282,7 +313,7 @@
             <span class="btn btn-ghost" id="auditGradeBadge" style="border:1px solid; cursor:default; align-self:flex-start;">✅ Excellent</span>
           </div>
 
-          <div style="display:flex; flex-direction:column; gap: 8px;">
+          <div class="audit-hero-actions">
             <button class="btn btn-primary btn-md" id="btnReRunAudit">⚡ Re-run Audit</button>
             <button class="btn btn-secondary btn-md" id="btnExportAudit">📥 Export HTML</button>
           </div>
@@ -451,6 +482,9 @@
     <div class="status-item">
       <span class="status-dot"></span>
       <span>Live Preview Active</span>
+    </div>
+    <div class="status-item status-shortcuts">
+      <span>Shortcuts: <kbd>F</kbd> Fit · <kbd>R</kbd> Rotate · <kbd>B</kbd> Bezel · <kbd>◀/▶</kbd> Devices · <kbd>+/−</kbd> Zoom</span>
     </div>
     <div style="display:flex; gap: 20px; align-items:center;">
       <div class="status-item" id="statusSource">Source: Demo</div>

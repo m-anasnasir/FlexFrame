@@ -31,12 +31,14 @@ class DeviceManager {
         this.currentDevice = window.DEVICE_PRESETS[0]; // iPhone 15 Pro by default
         this.isLandscape = false;
         this.scale = 1.0;
+        this.isAutoFit = true; // Auto-fit by default so every device fits on any screen
         this.showBezel = true;
         this.viewMode = 'single'; // 'single' or 'matrix'
         this.activeMatrixCategory = 'all'; // 'all', 'mobile', 'tablet', 'desktop'
         this.customWidth = 800;
         this.customHeight = 600;
         this.listeners = [];
+        this.zoomSteps = [0.25, 0.33, 0.5, 0.6, 0.75, 0.85, 1.0, 1.25, 1.5];
     }
 
     setDevice(deviceId) {
@@ -45,6 +47,28 @@ class DeviceManager {
             this.currentDevice = found;
             this.notify();
         }
+    }
+
+    nextDevice() {
+        const list = this.activeMatrixCategory === 'all'
+            ? window.DEVICE_PRESETS
+            : window.DEVICE_PRESETS.filter(d => d.category === this.activeMatrixCategory);
+        if (!list.length) return;
+        const idx = list.findIndex(d => d.id === this.currentDevice.id);
+        const nextIdx = (idx + 1) % list.length;
+        this.currentDevice = list[nextIdx];
+        this.notify();
+    }
+
+    prevDevice() {
+        const list = this.activeMatrixCategory === 'all'
+            ? window.DEVICE_PRESETS
+            : window.DEVICE_PRESETS.filter(d => d.category === this.activeMatrixCategory);
+        if (!list.length) return;
+        const idx = list.findIndex(d => d.id === this.currentDevice.id);
+        const prevIdx = (idx - 1 + list.length) % list.length;
+        this.currentDevice = list[prevIdx];
+        this.notify();
     }
 
     setCustomDimensions(width, height) {
@@ -70,8 +94,40 @@ class DeviceManager {
         this.notify();
     }
 
+    setAutoFit(enabled = true) {
+        this.isAutoFit = !!enabled;
+        this.notify();
+    }
+
+    toggleAutoFit() {
+        this.isAutoFit = !this.isAutoFit;
+        this.notify();
+    }
+
     setScale(scaleFactor) {
-        this.scale = Math.max(0.25, Math.min(1.5, scaleFactor));
+        if (scaleFactor === 'fit' || scaleFactor === 'auto') {
+            this.isAutoFit = true;
+        } else {
+            this.isAutoFit = false;
+            const parsed = typeof scaleFactor === 'string' ? parseFloat(scaleFactor) : scaleFactor;
+            this.scale = Math.max(0.15, Math.min(2.0, parsed || 1.0));
+        }
+        this.notify();
+    }
+
+    zoomIn() {
+        this.isAutoFit = false;
+        const current = this.scale;
+        const next = this.zoomSteps.find(s => s > current + 0.02) || Math.min(2.0, current + 0.15);
+        this.scale = Math.round(next * 100) / 100;
+        this.notify();
+    }
+
+    zoomOut() {
+        this.isAutoFit = false;
+        const current = this.scale;
+        const prev = [...this.zoomSteps].reverse().find(s => s < current - 0.02) || Math.max(0.2, current - 0.15);
+        this.scale = Math.round(prev * 100) / 100;
         this.notify();
     }
 
