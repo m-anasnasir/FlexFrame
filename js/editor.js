@@ -22,7 +22,7 @@ class CodeEditor {
         <div class="editor-tabs" id="editorTabs"></div>
         <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
           <span style="font-size:0.72rem; font-weight:600; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.06em;">Live Editor</span>
-          <button class="btn btn-sm btn-cyan" id="applyEdit">⚡ Apply</button>
+          <button class="btn btn-sm btn-cyan" id="applyEdit">Apply changes</button>
         </div>
       </div>
       <div class="editor-body">
@@ -39,7 +39,7 @@ class CodeEditor {
     this.container.querySelector('#applyEdit').addEventListener('click', () => {
       if (this.activeFile) {
         window.fileLoader.updateFileContent(this.activeFile, this.textarea.value);
-        showToast('Live preview updated ⚡', 'success');
+        showToast('Live preview updated', 'success');
       }
     });
 
@@ -69,10 +69,9 @@ class CodeEditor {
     }
     files.forEach(f => {
       const ext = f.split('.').pop();
-      const icons = { html: '🌐', css: '🎨', js: '⚡', json: '📋' };
       const btn = document.createElement('button');
       btn.className = 'editor-file-tab' + (f === this.activeFile ? ' active' : '');
-      btn.innerHTML = `<span>${icons[ext] || '📄'}</span>${f}`;
+      btn.textContent = f;
       btn.addEventListener('click', () => this.loadFile(f));
       this.tabsEl.appendChild(btn);
     });
@@ -99,7 +98,7 @@ window.showToast = function(message, type = 'info') {
   if (!container) return;
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  toast.innerHTML = `<span>${type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span> ${message}`;
+  toast.textContent = message;
   container.appendChild(toast);
   requestAnimationFrame(() => toast.classList.add('show'));
   setTimeout(() => {

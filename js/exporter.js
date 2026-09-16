@@ -44,7 +44,7 @@ class Exporter {
 </head>
 <body>
     <div class="header">
-        <h1>📊 Responsiveness Audit Report</h1>
+        <h1>Responsiveness Audit Report</h1>
         <p>Project: <b>${projectName}</b> • Generated: <b>${date}</b></p>
     </div>
 

@@ -110,10 +110,10 @@ class AuditEngine {
         score = Math.max(0, Math.min(100, Math.round(score)));
 
         // Determine grade classification
-        let grade = { label: 'EXCELLENT', color: '#10b981', badgeClass: 'badge-success', icon: '✅' };
-        if (score < 50) grade = { label: 'POOR (CRITICAL ISSUES)', color: '#ef4444', badgeClass: 'badge-danger', icon: '❌' };
+        let grade = { label: 'EXCELLENT', color: '#10b981', badgeClass: 'badge-success', icon: '' };
+        if (score < 50) grade = { label: 'POOR (CRITICAL ISSUES)', color: '#ef4444', badgeClass: 'badge-danger', icon: '' };
         else if (score < 75) grade = { label: 'FAIR (NEEDS IMPROVEMENT)', color: '#f59e0b', badgeClass: 'badge-warning', icon: '⚠️' };
-        else if (score < 90) grade = { label: 'GOOD', color: '#3b82f6', badgeClass: 'badge-info', icon: 'ℹ️' };
+        else if (score < 90) grade = { label: 'GOOD', color: '#3b82f6', badgeClass: 'badge-info', icon: '' };
 
         const report = {
             score,

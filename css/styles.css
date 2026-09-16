@@ -3,30 +3,30 @@
    High-fidelity UI for professional responsive testing
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&family=Outfit:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 /* ─── Design Tokens ─────────────────────────────────────────────────────── */
 :root {
   /* Surfaces */
-  --surface-0: #03050e;
-  --surface-1: #080c1a;
-  --surface-2: #0d1326;
-  --surface-3: #111930;
-  --surface-glass: rgba(13, 19, 38, 0.75);
-  --surface-glass-2: rgba(8, 12, 26, 0.9);
+  --surface-0: #0b1117;
+  --surface-1: #101820;
+  --surface-2: #151f29;
+  --surface-3: #1b2833;
+  --surface-glass: rgba(21, 31, 41, 0.86);
+  --surface-glass-2: rgba(16, 24, 32, 0.94);
 
   /* Brand Gradient */
-  --brand-from: #4f8fff;
-  --brand-via: #8b5cf6;
-  --brand-to: #06b6d4;
+  --brand-from: #2dd4bf;
+  --brand-via: #14b8a6;
+  --brand-to: #0f766e;
 
   /* Accent Colors */
-  --accent-blue: #4f8fff;
-  --accent-purple: #8b5cf6;
-  --accent-cyan: #06b6d4;
-  --accent-cyan-glow: rgba(6, 182, 212, 0.35);
-  --accent-purple-glow: rgba(139, 92, 246, 0.35);
-  --accent-blue-glow: rgba(79, 143, 255, 0.35);
+  --accent-blue: #2dd4bf;
+  --accent-purple: #5eead4;
+  --accent-cyan: #2dd4bf;
+  --accent-cyan-glow: rgba(45, 212, 191, 0.2);
+  --accent-purple-glow: rgba(94, 234, 212, 0.2);
+  --accent-blue-glow: rgba(45, 212, 191, 0.2);
 
   /* Semantic */
   --color-success: #22c55e;
@@ -39,21 +39,21 @@
   --color-info-muted: rgba(56, 189, 248, 0.12);
 
   /* Text */
-  --text-primary: #f0f4ff;
-  --text-secondary: #8b9ec7;
-  --text-tertiary: #4a5a80;
-  --text-inverse: #03050e;
+  --text-primary: #edf5f4;
+  --text-secondary: #9aadb5;
+  --text-tertiary: #637782;
+  --text-inverse: #0b1117;
 
   /* Borders */
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-default: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.18);
-  --border-brand: rgba(79, 143, 255, 0.5);
+  --border-subtle: rgba(220, 239, 238, 0.08);
+  --border-default: rgba(220, 239, 238, 0.14);
+  --border-strong: rgba(220, 239, 238, 0.24);
+  --border-brand: rgba(45, 212, 191, 0.48);
 
   /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Outfit', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-display: 'Manrope', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
 
   /* Spacing */
   --space-1: 4px;
@@ -66,17 +66,17 @@
   --space-10: 40px;
 
   /* Radius */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 22px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
   --radius-full: 9999px;
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3);
-  --shadow-lg: 0 12px 40px rgba(0,0,0,0.5), 0 6px 20px rgba(0,0,0,0.4);
-  --shadow-xl: 0 30px 80px rgba(0,0,0,0.6), 0 15px 40px rgba(0,0,0,0.5);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.38);
+  --shadow-xl: 0 22px 50px rgba(0, 0, 0, 0.48);
 
   /* Layout */
   --header-h: 64px;
@@ -108,9 +108,8 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(79, 143, 255, 0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 70% 50% at 90% 100%, rgba(6, 182, 212, 0.1) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(139, 92, 246, 0.07) 0%, transparent 60%);
+    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(45, 212, 191, 0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 90% 100%, rgba(15, 118, 110, 0.12) 0%, transparent 55%);
   pointer-events: none;
   z-index: 0;
 }
@@ -120,8 +119,8 @@ body > * { position: relative; z-index: 1; }
 /* Scrollbars */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(79, 143, 255, 0.5); }
+::-webkit-scrollbar-thumb { background: #344650; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
 
 /* ─── Typography Utilities ───────────────────────────────────────────────── */
 .font-display { font-family: var(--font-display); }
@@ -168,14 +167,14 @@ body > * { position: relative; z-index: 1; }
   border-radius: 10px;
   object-fit: cover;
   border: 1px solid var(--border-brand);
-  box-shadow: 0 0 18px rgba(79, 143, 255, 0.4);
+  box-shadow: 0 0 18px rgba(45, 212, 191, 0.24);
 }
 
 .brand-name {
   font-family: var(--font-display);
   font-size: 1.2rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #ffffff 0%, #a5c5ff 35%, var(--accent-cyan) 70%, #c084fc 100%);
+  background: linear-gradient(135deg, #f4fbfa 0%, #b7eeea 42%, var(--accent-cyan) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.02em;
@@ -188,8 +187,8 @@ body > * { position: relative; z-index: 1; }
   letter-spacing: 0.08em;
   padding: 3px 8px;
   border-radius: var(--radius-full);
-  background: linear-gradient(135deg, rgba(79, 143, 255, 0.2), rgba(139, 92, 246, 0.2));
-  border: 1px solid rgba(79, 143, 255, 0.4);
+  background: rgba(45, 212, 191, 0.1);
+  border: 1px solid rgba(45, 212, 191, 0.32);
   color: var(--accent-blue);
   text-transform: uppercase;
 }
@@ -200,7 +199,7 @@ body > * { position: relative; z-index: 1; }
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  background: rgba(255,255,255,0.04);
+  background: var(--surface-2);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   padding: 0 var(--space-3) 0 var(--space-4);
@@ -281,13 +280,13 @@ body > * { position: relative; z-index: 1; }
 
 /* Variants */
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  background: var(--accent-blue);
   color: white;
   box-shadow: 0 4px 16px rgba(79, 143, 255, 0.3);
 }
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(79, 143, 255, 0.45);
+  box-shadow: 0 8px 24px rgba(15, 118, 110, 0.24);
 }
 
 .btn-secondary {
@@ -296,7 +295,7 @@ body > * { position: relative; z-index: 1; }
   border: 1px solid var(--border-default);
 }
 .btn-secondary:hover {
-  background: rgba(255,255,255,0.08);
+  background: var(--surface-3);
   border-color: var(--border-strong);
 }
 
@@ -306,13 +305,13 @@ body > * { position: relative; z-index: 1; }
   border: 1px solid transparent;
 }
 .btn-ghost:hover {
-  background: rgba(255,255,255,0.06);
+  background: var(--surface-3);
   color: var(--text-primary);
   border-color: var(--border-subtle);
 }
 
 .btn-ghost.active {
-  background: rgba(79, 143, 255, 0.15);
+  background: rgba(15, 118, 110, 0.1);
   color: var(--accent-blue);
   border-color: rgba(79, 143, 255, 0.3);
 }
@@ -349,7 +348,7 @@ body > * { position: relative; z-index: 1; }
   border: none;
 }
 .btn-group .btn-ghost.active {
-  background: rgba(255,255,255,0.1);
+  background: var(--surface-1);
   color: var(--text-primary);
   border: none;
 }
@@ -622,15 +621,15 @@ body > * { position: relative; z-index: 1; }
 
 .device-shell {
   position: relative;
-  background: linear-gradient(145deg, #1c2438, #141c2f);
+  background: linear-gradient(145deg, #263743, #18252e);
   border-radius: 48px;
   padding: 20px;
   box-shadow:
-    0 0 0 1px rgba(255,255,255,0.07),
-    0 0 0 4px #1c2438,
-    0 0 0 5px rgba(255,255,255,0.04),
-    0 40px 80px rgba(0,0,0,0.7),
-    0 0 40px rgba(6, 182, 212, 0.08);
+    0 0 0 1px rgba(220, 239, 238, 0.16),
+    0 0 0 4px #263743,
+    0 0 0 5px rgba(220, 239, 238, 0.05),
+    0 40px 80px rgba(0, 0, 0, 0.58),
+    0 0 40px rgba(45, 212, 191, 0.08);
 }
 
 .device-shell.borderless {

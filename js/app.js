@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       const o = document.createElement('option');
       o.value = d.id;
-      o.textContent = `${d.icon} ${d.name} (${d.width}×${d.height})`;
+      o.textContent = `${d.name} (${d.width}×${d.height})`;
       if (d.id === window.deviceManager.currentDevice.id) o.selected = true;
       sel.lastChild.appendChild(o);
     });
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── Auto-fit & Zoom controls ───────────────────────────────────────── */
   document.getElementById('btnFitScreen')?.addEventListener('click', () => {
     window.deviceManager.setAutoFit(true);
-    showToast('Auto-Fit to Screen enabled 🔍', 'info');
+    showToast('Auto-fit to screen enabled', 'info');
   });
 
   document.getElementById('btnZoomIn')?.addEventListener('click', () => {
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('zoomSelect')?.addEventListener('change', e => {
     if (e.target.value === 'fit') {
       window.deviceManager.setAutoFit(true);
-      showToast('Auto-Fit to Screen enabled 🔍', 'info');
+      showToast('Auto-fit to screen enabled', 'info');
     } else {
       window.deviceManager.setScale(parseFloat(e.target.value));
       showToast(`Zoom: ${Math.round(window.deviceManager.scale * 100)}%`, 'info');
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const h = parseInt(document.getElementById('customH')?.value, 10);
     if (w && h) {
       window.deviceManager.setCustomDimensions(w, h);
-      showToast(`Custom size set: ${w}×${h}px ⚙️`, 'success');
+      showToast(`Custom size set: ${w}×${h}px`, 'success');
     }
   });
 
@@ -238,16 +238,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'f' || e.key === 'F') {
       e.preventDefault();
       window.deviceManager.toggleAutoFit();
-      showToast(window.deviceManager.isAutoFit ? 'Auto-Fit Enabled 🔍' : 'Auto-Fit Disabled', 'info');
+      showToast(window.deviceManager.isAutoFit ? 'Auto-fit enabled' : 'Auto-fit disabled', 'info');
     } else if (e.key === 'r' || e.key === 'R') {
       e.preventDefault();
       window.deviceManager.toggleOrientation();
-      showToast(`Orientation: ${window.deviceManager.isLandscape ? 'Landscape' : 'Portrait'} 🔄`, 'info');
+      showToast(`Orientation: ${window.deviceManager.isLandscape ? 'Landscape' : 'Portrait'}`, 'info');
     } else if (e.key === 'b' || e.key === 'B') {
       e.preventDefault();
       window.deviceManager.toggleBezel();
       document.getElementById('btnBezel')?.classList.toggle('active', window.deviceManager.showBezel);
-      showToast(`Frame: ${window.deviceManager.showBezel ? 'On' : 'Off'} 🖼️`, 'info');
+      showToast(`Frame: ${window.deviceManager.showBezel ? 'On' : 'Off'}`, 'info');
     } else if (e.key === '+' || e.key === '=') {
       e.preventDefault();
       window.deviceManager.zoomIn();
@@ -446,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="device-label">
             <span class="dot-live"></span>
-            ${dev.icon} ${dev.name} &nbsp;·&nbsp; ${dims.width} × ${dims.height}
+            ${dev.name} &nbsp;·&nbsp; ${dims.width} × ${dims.height}
             <span class="device-scale-tag ${dm.isAutoFit ? 'fit' : ''}">${scalePct}% ${dm.isAutoFit ? '(Auto-Fit)' : ''}</span>
           </div>
         </div>
@@ -471,7 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (zoomSel) {
       const fitOpt = zoomSel.querySelector('option[value="fit"]');
       if (fitOpt) {
-        fitOpt.textContent = `🔍 Fit (${Math.round(scale * 100)}%)`;
+        fitOpt.textContent = `Fit (${Math.round(scale * 100)}%)`;
       }
       if (isAutoFit) {
         zoomSel.value = 'fit';
@@ -509,7 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
       card.className = 'matrix-card';
       card.innerHTML = `
         <div class="matrix-card-header">
-          <span class="matrix-card-title">${dev.icon} ${dev.name}</span>
+          <span class="matrix-card-title">${dev.name}</span>
           <span class="matrix-dim-badge">${dev.width}×${dev.height}</span>
         </div>
         <div class="matrix-viewport" style="height:${Math.max(visH + 32, 220)}px;">
@@ -623,7 +623,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (report.issues.length === 0) {
       list.innerHTML = `
         <div class="audit-success">
-          <div style="font-size:2.5rem; margin-bottom:12px;">🎉</div>
           <h3>Zero Issues Found!</h3>
           <p>Your project passes all responsiveness checks. Viewport meta, media queries, fluid images, and touch targets all look great.</p>
         </div>`;
@@ -649,7 +648,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <pre>${escHtml(issue.codeSnippet)}</pre>
           </div>
           <div class="issue-actions">
-            ${issue.selectors ? `<button class="btn btn-sm btn-secondary btn-highlight-sel" data-sel='${JSON.stringify(issue.selectors)}'>🔍 Highlight in viewport</button>` : ''}
+            ${issue.selectors ? `<button class="btn btn-sm btn-secondary btn-highlight-sel" data-sel='${JSON.stringify(issue.selectors)}'>Highlight in viewport</button>` : ''}
           </div>
         </div>
       `;

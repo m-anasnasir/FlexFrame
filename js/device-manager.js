@@ -5,25 +5,25 @@
 
 window.DEVICE_PRESETS = [
     // Mobile Devices
-    { id: 'iphone-15-pro', name: 'iPhone 15 Pro', category: 'mobile', width: 393, height: 852, dpr: 3.0, os: 'iOS', icon: '📱', hasBezel: true, notchType: 'dynamic-island' },
-    { id: 'iphone-15-promax', name: 'iPhone 15 Pro Max', category: 'mobile', width: 430, height: 932, dpr: 3.0, os: 'iOS', icon: '📱', hasBezel: true, notchType: 'dynamic-island' },
-    { id: 'galaxy-s24', name: 'Samsung Galaxy S24', category: 'mobile', width: 412, height: 915, dpr: 3.0, os: 'Android', icon: '📱', hasBezel: true, notchType: 'hole-punch' },
-    { id: 'pixel-8-pro', name: 'Google Pixel 8 Pro', category: 'mobile', width: 412, height: 915, dpr: 3.0, os: 'Android', icon: '📱', hasBezel: true, notchType: 'hole-punch' },
-    { id: 'iphone-se', name: 'iPhone SE (3rd Gen)', category: 'mobile', width: 375, height: 667, dpr: 2.0, os: 'iOS', icon: '📱', hasBezel: true, notchType: 'classic' },
+    { id: 'iphone-15-pro', name: 'iPhone 15 Pro', category: 'mobile', width: 393, height: 852, dpr: 3.0, os: 'iOS', icon: '', hasBezel: true, notchType: 'dynamic-island' },
+    { id: 'iphone-15-promax', name: 'iPhone 15 Pro Max', category: 'mobile', width: 430, height: 932, dpr: 3.0, os: 'iOS', icon: '', hasBezel: true, notchType: 'dynamic-island' },
+    { id: 'galaxy-s24', name: 'Samsung Galaxy S24', category: 'mobile', width: 412, height: 915, dpr: 3.0, os: 'Android', icon: '', hasBezel: true, notchType: 'hole-punch' },
+    { id: 'pixel-8-pro', name: 'Google Pixel 8 Pro', category: 'mobile', width: 412, height: 915, dpr: 3.0, os: 'Android', icon: '', hasBezel: true, notchType: 'hole-punch' },
+    { id: 'iphone-se', name: 'iPhone SE (3rd Gen)', category: 'mobile', width: 375, height: 667, dpr: 2.0, os: 'iOS', icon: '', hasBezel: true, notchType: 'classic' },
     
     // Tablets
-    { id: 'ipad-pro-129', name: 'iPad Pro 12.9"', category: 'tablet', width: 1024, height: 1366, dpr: 2.0, os: 'iPadOS', icon: '📑', hasBezel: true, notchType: 'none' },
-    { id: 'ipad-air', name: 'iPad Air 10.9"', category: 'tablet', width: 820, height: 1180, dpr: 2.0, os: 'iPadOS', icon: '📑', hasBezel: true, notchType: 'none' },
-    { id: 'galaxy-tab-s9', name: 'Samsung Galaxy Tab S9', category: 'tablet', width: 800, height: 1280, dpr: 2.5, os: 'Android', icon: '📑', hasBezel: true, notchType: 'none' },
+    { id: 'ipad-pro-129', name: 'iPad Pro 12.9"', category: 'tablet', width: 1024, height: 1366, dpr: 2.0, os: 'iPadOS', icon: '', hasBezel: true, notchType: 'none' },
+    { id: 'ipad-air', name: 'iPad Air 10.9"', category: 'tablet', width: 820, height: 1180, dpr: 2.0, os: 'iPadOS', icon: '', hasBezel: true, notchType: 'none' },
+    { id: 'galaxy-tab-s9', name: 'Samsung Galaxy Tab S9', category: 'tablet', width: 800, height: 1280, dpr: 2.5, os: 'Android', icon: '', hasBezel: true, notchType: 'none' },
 
     // Laptops
-    { id: 'macbook-air-13', name: 'MacBook Air 13"', category: 'laptop', width: 1280, height: 832, dpr: 2.0, os: 'macOS', icon: '💻', hasBezel: false, notchType: 'notch' },
-    { id: 'dell-xps-15', name: 'Dell XPS 15', category: 'laptop', width: 1440, height: 900, dpr: 1.5, os: 'Windows', icon: '💻', hasBezel: false, notchType: 'none' },
+    { id: 'macbook-air-13', name: 'MacBook Air 13"', category: 'laptop', width: 1280, height: 832, dpr: 2.0, os: 'macOS', icon: '', hasBezel: false, notchType: 'notch' },
+    { id: 'dell-xps-15', name: 'Dell XPS 15', category: 'laptop', width: 1440, height: 900, dpr: 1.5, os: 'Windows', icon: '', hasBezel: false, notchType: 'none' },
 
     // Desktop
-    { id: 'desktop-fhd', name: '1080p Desktop', category: 'desktop', width: 1920, height: 1080, dpr: 1.0, os: 'Desktop', icon: '🖥️', hasBezel: false, notchType: 'none' },
-    { id: 'desktop-2k', name: '2K QHD Display', category: 'desktop', width: 2560, height: 1440, dpr: 1.0, os: 'Desktop', icon: '🖥️', hasBezel: false, notchType: 'none' },
-    { id: 'ultrawide', name: 'UltraWide Monitor', category: 'desktop', width: 2560, height: 1080, dpr: 1.0, os: 'Desktop', icon: '🖥️', hasBezel: false, notchType: 'none' }
+    { id: 'desktop-fhd', name: '1080p Desktop', category: 'desktop', width: 1920, height: 1080, dpr: 1.0, os: 'Desktop', icon: '', hasBezel: false, notchType: 'none' },
+    { id: 'desktop-2k', name: '2K QHD Display', category: 'desktop', width: 2560, height: 1440, dpr: 1.0, os: 'Desktop', icon: '', hasBezel: false, notchType: 'none' },
+    { id: 'ultrawide', name: 'UltraWide Monitor', category: 'desktop', width: 2560, height: 1080, dpr: 1.0, os: 'Desktop', icon: '', hasBezel: false, notchType: 'none' }
 ];
 
 class DeviceManager {
@@ -82,7 +82,7 @@ class DeviceManager {
             height: this.customHeight,
             dpr: 1.0,
             os: 'Custom',
-            icon: '⚙️',
+            icon: '',
             hasBezel: false,
             notchType: 'none'
         };

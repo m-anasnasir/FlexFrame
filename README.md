@@ -7,8 +7,9 @@
 <p align="center">
     <em>A client-side responsive testing studio and automated audit engine for web developers. FlexFrame Pro enables developers to preview, test, and audit layouts across multiple real-world device viewports with automated scoring, live DOM diagnostics, and an in-browser code editor.</em>
 </p>
+er
 
-<div align="center">
+<div n="center">
 
 [![Pure Vanilla JS](https://img.shields.io/badge/JavaScript-Vanilla_ES6+-f7df1e?logo=javascript&logoColor=black)](#tech-stack)
 [![HTML5 & CSS3](https://img.shields.io/badge/Stack-HTML5%20%2F%20CSS3-e34f26?logo=html5&logoColor=white)](#tech-stack)

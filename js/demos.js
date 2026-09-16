@@ -257,7 +257,7 @@ window.DEMO_TEMPLATES = {
 <body>
 
   <header>
-    <div class="logo">⚡ ApexCloud</div>
+    <div class="logo">ApexCloud</div>
     <nav>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
@@ -271,7 +271,7 @@ window.DEMO_TEMPLATES = {
 
   <main>
     <section class="hero">
-      <span class="badge">🚀 Next-Gen Cloud Platform v3.0</span>
+      <span class="badge">Next-Gen Cloud Platform v3.0</span>
       <h1>Deploy scalable apps in seconds, not hours.</h1>
       <p>ApexCloud delivers high-performance multi-region edge hosting with automated CI/CD pipelines and built-in responsiveness testing.</p>
       <div class="hero-cta">
@@ -283,12 +283,12 @@ window.DEMO_TEMPLATES = {
     <section class="features" id="features">
       <div class="features-grid">
         <div class="feature-card">
-          <div class="feature-icon">🌐</div>
+          <div class="feature-icon">Global</div>
           <h3>Global Edge Network</h3>
           <p>Deploy your full-stack applications across 300+ edge locations worldwide for sub-50ms latencies.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">📱</div>
+          <div class="feature-icon">Mobile</div>
           <h3>Fluid Mobile Responsive</h3>
           <p>Built with container queries and adaptive typography that automatically looks stunning on every screen size.</p>
         </div>
@@ -534,7 +534,7 @@ window.DEMO_TEMPLATES = {
 </head>
 <body>
 
-  <div class="top-announcement">🎉 Autumn Collection Sale: Up to 40% OFF with code <b>AUTUMN2026</b></div>
+  <div class="top-announcement">Autumn Collection Sale: Up to 40% OFF with code <b>AUTUMN2026</b></div>
 
   <header>
     <div class="brand">Vogue<span>.</span></div>
@@ -542,8 +542,8 @@ window.DEMO_TEMPLATES = {
       <input type="text" placeholder="Search products, brands...">
     </div>
     <div class="header-actions">
-      <button class="icon-btn" title="Search">🔍</button>
-      <button class="icon-btn" title="Cart">🛒<span class="cart-badge">3</span></button>
+      <button class="icon-btn" title="Search">Search</button>
+      <button class="icon-btn" title="Cart">Cart<span class="cart-badge">3</span></button>
     </div>
   </header>
 
@@ -582,7 +582,7 @@ window.DEMO_TEMPLATES = {
         </div>
       </div>
       <div class="product-card">
-        <div class="product-img">🕶️</div>
+        <div class="product-img">Sunglasses</div>
         <div class="product-info">
           <div class="product-title">Polarized Sunglasses</div>
           <div class="product-cat">Eyewear</div>
@@ -593,7 +593,7 @@ window.DEMO_TEMPLATES = {
         </div>
       </div>
       <div class="product-card">
-        <div class="product-img">🎒</div>
+        <div class="product-img">Travel pack</div>
         <div class="product-info">
           <div class="product-title">Leather Travel Pack</div>
           <div class="product-cat">Bags</div>
@@ -607,10 +607,10 @@ window.DEMO_TEMPLATES = {
   </section>
 
   <nav class="mobile-bottom-nav">
-    <a href="#" class="nav-item active"><span>🏠</span>Home</a>
-    <a href="#" class="nav-item"><span>🔍</span>Search</a>
-    <a href="#" class="nav-item"><span>🛒</span>Cart</a>
-    <a href="#" class="nav-item"><span>👤</span>Account</a>
+    <a href="#" class="nav-item active">Home</a>
+    <a href="#" class="nav-item">Search</a>
+    <a href="#" class="nav-item">Cart</a>
+    <a href="#" class="nav-item">Account</a>
   </nav>
 
 </body>

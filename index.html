@@ -13,7 +13,7 @@
 <!-- ═══ DRAG OVERLAY ═══════════════════════════════════════════════════════ -->
 <div class="drag-overlay" id="dragOverlay">
   <div class="drag-box">
-    <div class="drag-box-icon">📂</div>
+    <div class="drag-box-icon" aria-hidden="true"></div>
     <h2>Drop to Load Project</h2>
     <p>Release HTML files or a .zip archive — parsed instantly in your browser</p>
   </div>
@@ -29,32 +29,32 @@
     <div class="modal-body">
 
       <label class="upload-option primary">
-        <div class="upload-option-icon">📦</div>
+        <div class="upload-option-icon" aria-hidden="true"></div>
         <div class="upload-option-info">
           <div class="upload-option-title">Upload ZIP Archive</div>
           <div class="upload-option-desc">Select a .zip file — HTML, CSS, JS &amp; assets all supported</div>
         </div>
-        <span style="font-size: 1rem; color: var(--text-tertiary);">→</span>
+        <span class="upload-option-action">Select</span>
         <input type="file" id="zipInput" accept=".zip" style="display:none">
       </label>
 
       <label class="upload-option">
-        <div class="upload-option-icon">📁</div>
+        <div class="upload-option-icon" aria-hidden="true"></div>
         <div class="upload-option-info">
           <div class="upload-option-title">Select Project Folder</div>
           <div class="upload-option-desc">Upload an entire folder with all linked resources</div>
         </div>
-        <span style="font-size: 1rem; color: var(--text-tertiary);">→</span>
+        <span class="upload-option-action">Select</span>
         <input type="file" id="folderInput" webkitdirectory directory style="display:none">
       </label>
 
       <label class="upload-option">
-        <div class="upload-option-icon">📄</div>
+        <div class="upload-option-icon" aria-hidden="true"></div>
         <div class="upload-option-info">
           <div class="upload-option-title">Select Individual Files</div>
           <div class="upload-option-desc">Pick HTML, CSS, JS or image files manually</div>
         </div>
-        <span style="font-size: 1rem; color: var(--text-tertiary);">→</span>
+        <span class="upload-option-action">Select</span>
         <input type="file" id="fileInput" multiple accept=".html,.css,.js,.png,.jpg,.svg,.json" style="display:none">
       </label>
 
@@ -71,25 +71,23 @@
   <!-- HEADER -->
   <header class="app-header">
     <div class="brand">
-      <img src="assets/logo.jpg" alt="Logo" class="brand-icon">
       <span class="brand-name">FlexFrame</span>
       <span class="version-badge">Pro Live</span>
     </div>
 
     <div class="url-bar">
-      <span class="url-bar-icon">🌐</span>
       <input type="text" id="urlInput" placeholder="https://your-website.com — Enter to test">
     </div>
 
     <div class="header-right">
       <button class="btn btn-secondary btn-md" id="btnUploadProject" title="Upload Project (ZIP, Folder, or Files)">
-        📁 <span class="btn-text">Upload</span>
+        <span class="btn-text">Upload project</span>
       </button>
       <button class="btn btn-primary btn-md" id="btnRunAudit" title="Run Automated Responsiveness Audit">
-        ⚡ <span class="btn-text">Run Audit</span>
+        <span class="btn-text">Run audit</span>
       </button>
       <button class="btn btn-ghost btn-md btn-sidebar-toggle" id="btnToggleSidebar" title="View Responsiveness Score & Device Specs">
-        📊 <span class="btn-text">Score</span>
+        <span class="btn-text">Score</span>
         <span class="score-pill-badge" id="toolbarScoreBadge">100%</span>
       </button>
     </div>
@@ -98,19 +96,19 @@
   <!-- TAB BAR -->
   <nav class="tab-bar">
     <button class="tab-item active" data-tab="studio">
-      <span class="tab-icon">📱</span> <span class="tab-label">Device Studio</span>
+      <span class="tab-label">Device Studio</span>
     </button>
     <button class="tab-item" data-tab="audit">
-      <span class="tab-icon">📊</span> <span class="tab-label">Audit Report</span>
+      <span class="tab-label">Audit Report</span>
     </button>
     <button class="tab-item" data-tab="breakpoints">
-      <span class="tab-icon">📐</span> <span class="tab-label">Breakpoints</span>
+      <span class="tab-label">Breakpoints</span>
     </button>
     <button class="tab-item" data-tab="editor">
-      <span class="tab-icon">💻</span> <span class="tab-label">Live Editor</span>
+      <span class="tab-label">Live Editor</span>
     </button>
     <button class="tab-item" data-tab="demos">
-      <span class="tab-icon">🚀</span> <span class="tab-label">Sample Projects</span>
+      <span class="tab-label">Sample Projects</span>
     </button>
   </nav>
 
@@ -136,34 +134,34 @@
         <!-- Device category filter -->
         <div class="btn-group" id="categoryFilter">
           <button class="btn btn-sm btn-ghost active" data-cat="all">All</button>
-          <button class="btn btn-sm btn-ghost" data-cat="mobile">📱 Mobile</button>
-          <button class="btn btn-sm btn-ghost" data-cat="tablet">📑 Tablet</button>
-          <button class="btn btn-sm btn-ghost" data-cat="laptop">💻 Laptop</button>
-          <button class="btn btn-sm btn-ghost" data-cat="desktop">🖥️ Desktop</button>
+          <button class="btn btn-sm btn-ghost" data-cat="mobile">Mobile</button>
+          <button class="btn btn-sm btn-ghost" data-cat="tablet">Tablet</button>
+          <button class="btn btn-sm btn-ghost" data-cat="laptop">Laptop</button>
+          <button class="btn btn-sm btn-ghost" data-cat="desktop">Desktop</button>
         </div>
 
         <!-- Device Navigation & Select -->
         <div class="device-selector-group">
-          <button class="btn btn-sm btn-ghost btn-icon-sm" id="btnPrevDevice" title="Previous Device (Left Arrow)">◀</button>
+          <button class="btn btn-sm btn-ghost" id="btnPrevDevice" title="Previous device">Previous</button>
           <select id="deviceSelect" class="select-styled" title="Choose Target Device"></select>
-          <button class="btn btn-sm btn-ghost btn-icon-sm" id="btnNextDevice" title="Next Device (Right Arrow)">▶</button>
+          <button class="btn btn-sm btn-ghost" id="btnNextDevice" title="Next device">Next</button>
         </div>
 
         <div class="toolbar-separator"></div>
 
         <!-- Controls: Orientation & Bezel -->
-        <button class="btn btn-sm btn-ghost" id="btnOrientation" title="Rotate Device Orientation (R)">🔄 Rotate</button>
-        <button class="btn btn-sm btn-ghost active" id="btnBezel" title="Toggle Hardware Frame / Bezel (B)">🖼️ Frame</button>
+        <button class="btn btn-sm btn-ghost" id="btnOrientation" title="Rotate device orientation (R)">Rotate</button>
+        <button class="btn btn-sm btn-ghost active" id="btnBezel" title="Toggle hardware frame (B)">Frame</button>
 
         <div class="toolbar-separator"></div>
 
         <!-- Auto-Fit & Zoom Controls -->
-        <button class="btn btn-sm btn-cyan active" id="btnFitScreen" title="Auto-Fit Device to Screen (F)">🔍 Fit</button>
+        <button class="btn btn-sm btn-cyan active" id="btnFitScreen" title="Auto-fit device to screen (F)">Fit</button>
 
         <div class="zoom-controls">
           <button class="btn btn-sm btn-ghost btn-icon-sm" id="btnZoomOut" title="Zoom Out (-)">−</button>
           <select id="zoomSelect" class="select-styled" title="Zoom / Scaling Level">
-            <option value="fit" selected>🔍 Fit to Screen</option>
+            <option value="fit" selected>Fit to screen</option>
             <option value="1">100% (Actual)</option>
             <option value="0.85">85%</option>
             <option value="0.75">75%</option>
@@ -178,7 +176,7 @@
         <div class="toolbar-separator"></div>
 
         <!-- Custom size toggle & inputs -->
-        <button class="btn btn-sm btn-ghost" id="btnToggleCustom" title="Set Custom Viewport Dimensions">⚙️ Custom</button>
+        <button class="btn btn-sm btn-ghost" id="btnToggleCustom" title="Set custom viewport dimensions">Custom size</button>
         <div class="dim-input-group" id="dimInputGroup">
           <input type="number" id="customW" placeholder="W" value="393" title="Width in px">
           <span class="sep">×</span>
@@ -216,8 +214,8 @@
 
           <!-- Mobile Sidebar Header -->
           <div class="sidebar-mobile-header">
-            <div class="sidebar-mobile-title">📊 Score & Device Specs</div>
-            <button class="btn btn-ghost btn-icon-sm" id="btnCloseSidebar" title="Close Sidebar">✕</button>
+            <div class="sidebar-mobile-title">Score &amp; Device Specs</div>
+            <button class="btn btn-ghost btn-sm" id="btnCloseSidebar" title="Close sidebar">Close</button>
           </div>
 
           <!-- Audit quick score -->
@@ -241,7 +239,7 @@
                 </svg>
                 <div class="score-ring-value" id="sidebarScore" style="color: var(--color-success);">100%</div>
               </div>
-              <span class="score-label" id="sidebarGrade">✅ Excellent</span>
+              <span class="score-label" id="sidebarGrade">Excellent</span>
             </div>
           </div>
 
@@ -281,10 +279,10 @@
           <!-- Actions -->
           <div class="sidebar-section" style="margin-top:auto; border-bottom:none;">
             <button class="btn btn-secondary btn-md" id="btnExportReport" style="width:100%; justify-content:center; margin-bottom: 8px;">
-              📥 Export Report
+              Export report
             </button>
             <button class="btn btn-ghost btn-md" id="btnGoToEditor" style="width:100%; justify-content:center; font-size:0.82rem; color: var(--text-tertiary);">
-              💻 Open Live Editor
+              Open live editor
             </button>
           </div>
 
@@ -310,12 +308,12 @@
           <div class="audit-hero-content">
             <h2>Responsiveness Audit</h2>
             <p>Automated checks covering viewport meta tags, container overflows, CSS media queries, touch target sizes, and fluid image rules.</p>
-            <span class="btn btn-ghost" id="auditGradeBadge" style="border:1px solid; cursor:default; align-self:flex-start;">✅ Excellent</span>
+            <span class="btn btn-ghost" id="auditGradeBadge" style="border:1px solid; cursor:default; align-self:flex-start;">Excellent</span>
           </div>
 
           <div class="audit-hero-actions">
-            <button class="btn btn-primary btn-md" id="btnReRunAudit">⚡ Re-run Audit</button>
-            <button class="btn btn-secondary btn-md" id="btnExportAudit">📥 Export HTML</button>
+            <button class="btn btn-primary btn-md" id="btnReRunAudit">Re-run audit</button>
+            <button class="btn btn-secondary btn-md" id="btnExportAudit">Export HTML</button>
           </div>
         </div>
 
@@ -400,7 +398,7 @@
 
           <div class="demo-card">
             <div class="demo-card-preview demo-card-preview-responsive">
-              ⚡
+              <span class="demo-preview-mark" aria-hidden="true"></span>
               <span class="demo-score-badge good">Score 100%</span>
             </div>
             <div class="demo-card-info">
@@ -419,7 +417,7 @@
 
           <div class="demo-card">
             <div class="demo-card-preview demo-card-preview-ecommerce">
-              🛒
+              <span class="demo-preview-mark" aria-hidden="true"></span>
               <span class="demo-score-badge good">Score 98%</span>
             </div>
             <div class="demo-card-info">
@@ -437,7 +435,7 @@
 
           <div class="demo-card">
             <div class="demo-card-preview demo-card-preview-legacy">
-              ❌
+              <span class="demo-preview-mark" aria-hidden="true"></span>
               <span class="demo-score-badge bad">Score 32%</span>
             </div>
             <div class="demo-card-info">
@@ -455,7 +453,7 @@
 
           <div class="demo-card">
             <div class="demo-card-preview demo-card-preview-portfolio">
-              🎨
+              <span class="demo-preview-mark" aria-hidden="true"></span>
               <span class="demo-score-badge good">Score 96%</span>
             </div>
             <div class="demo-card-info">
@@ -484,7 +482,7 @@
       <span>Live Preview Active</span>
     </div>
     <div class="status-item status-shortcuts">
-      <span>Shortcuts: <kbd>F</kbd> Fit · <kbd>R</kbd> Rotate · <kbd>B</kbd> Bezel · <kbd>◀/▶</kbd> Devices · <kbd>+/−</kbd> Zoom</span>
+      <span>Shortcuts: <kbd>F</kbd> Fit · <kbd>R</kbd> Rotate · <kbd>B</kbd> Bezel · <kbd>Previous/Next</kbd> Devices · <kbd>+/−</kbd> Zoom</span>
     </div>
     <div style="display:flex; gap: 20px; align-items:center;">
       <div class="status-item" id="statusSource">Source: Demo</div>
