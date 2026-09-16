@@ -154,4 +154,4 @@ This project is licensed under the MIT License.
 
 
 ---
-<div align="center">Made with 💖 by <a href="anasnasir.me">Developer</a> - if you find this useful, please ⭐️ the repo!
+<div align="center">Made with 💖 by <a href="https://anasnasir.me/">Developer</a> - if you find this useful, please ⭐️ the repo!
