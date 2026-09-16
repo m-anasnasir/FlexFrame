@@ -466,6 +466,7 @@ body > * { position: relative; z-index: 1; }
   background: var(--surface-3);
   border: 1px solid var(--border-default);
   color: var(--text-primary);
+  color-scheme: dark;
   font-family: var(--font-sans);
   font-size: 0.825rem;
   font-weight: 600;
@@ -477,6 +478,15 @@ body > * { position: relative; z-index: 1; }
   transition: border-color 0.2s;
 }
 .select-styled:focus { border-color: var(--accent-blue); }
+.select-styled option,
+.select-styled optgroup {
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+.select-styled optgroup {
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
 
 /* Zoom Controls Group */
 .zoom-controls {
@@ -494,6 +504,10 @@ body > * { position: relative; z-index: 1; }
   height: 28px;
   padding: 0 6px;
   font-size: 0.78rem;
+}
+.zoom-controls .select-styled option {
+  background: var(--surface-2);
+  color: var(--text-primary);
 }
 .zoom-controls .select-styled:focus { outline: none; }
 
@@ -1791,24 +1805,29 @@ kbd {
     gap: var(--space-2);
   }
   .header-right .btn {
-    height: 32px;
-    padding: 0 var(--space-2);
-    font-size: 0.75rem;
+    min-height: 40px;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 0.7rem;
   }
   .header-right .btn-text {
+    display: inline;
+  }
+  .header-right .score-pill-badge {
     display: none;
   }
 
   /* Tab Bar */
   .tab-bar {
-    height: 42px;
+    height: 48px;
     padding: 0 var(--space-2);
     gap: 1px;
     scroll-snap-type: x mandatory;
   }
   .tab-item {
+    min-height: 44px;
     padding: 0 var(--space-3);
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     scroll-snap-align: start;
   }
   .tab-item .tab-icon {
@@ -1817,9 +1836,59 @@ kbd {
 
   /* Device Toolbar */
   .device-toolbar {
-    height: 48px;
-    padding: 0 var(--space-2);
-    gap: var(--space-1);
+    height: auto;
+    min-height: 56px;
+    padding: var(--space-2);
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    align-content: center;
+    overflow: visible;
+  }
+  .device-selector-group {
+    order: 1;
+    flex: 1 1 100%;
+    justify-content: space-between;
+    min-width: 0;
+  }
+  .device-selector-group .btn {
+    min-width: 58px;
+    min-height: 40px;
+  }
+  .device-selector-group .select-styled {
+    flex: 1;
+    min-width: 0;
+    height: 40px;
+    text-overflow: ellipsis;
+  }
+  #btnOrientation,
+  #btnBezel,
+  #btnFitScreen,
+  #btnToggleCustom,
+  .zoom-controls,
+  .device-toolbar > .btn-group:last-child {
+    min-height: 40px;
+  }
+  .zoom-controls {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
+  .zoom-controls .select-styled {
+    flex: 1;
+    height: 36px;
+    min-width: 0;
+  }
+  #btnOrientation,
+  #btnBezel,
+  #btnFitScreen,
+  #btnToggleCustom {
+    flex: 1;
+    padding-inline: 8px;
+  }
+  .device-toolbar .toolbar-separator,
+  .device-toolbar #projectNameDisplay,
+  .device-toolbar #categoryFilter,
+  .device-toolbar .dim-input-group {
+    display: none;
   }
   .select-styled {
     height: 30px;
@@ -1835,6 +1904,15 @@ kbd {
   /* Canvas Area */
   .canvas-area {
     padding: var(--space-3);
+    min-height: 0;
+    align-items: flex-start;
+    touch-action: pan-x pan-y;
+  }
+  .studio-panel {
+    min-height: 0;
+  }
+  .device-frame-scaler {
+    margin-top: var(--space-4);
   }
 
   /* Audit Panel */
@@ -1909,8 +1987,12 @@ kbd {
 
   /* Status Bar */
   .status-bar {
+    height: 24px;
     padding: 0 var(--space-3);
-    font-size: 0.68rem;
+    font-size: 0.64rem;
+  }
+  .status-bar > div:last-child {
+    gap: var(--space-2) !important;
   }
   .status-bar .status-item:last-child {
     display: none;
@@ -1951,10 +2033,46 @@ kbd {
   .toast {
     width: 100%;
   }
+
+  /* Keep the drawer usable without covering the full viewport edge-to-edge. */
+  .properties-sidebar {
+    width: min(360px, 94vw);
+    max-width: 94vw;
+  }
+  .sidebar-section {
+    padding: var(--space-4);
+  }
 }
 
 /* ─── Compact / Small Mobile Screens (<= 420px) ─────────────────────────── */
 @media (max-width: 420px) {
+  .app-header {
+    padding-inline: 10px;
+  }
+  .header-right {
+    gap: 4px;
+  }
+  .header-right .btn {
+    padding-inline: 7px;
+    font-size: 0.64rem;
+  }
+  .url-bar input {
+    font-size: 0.72rem;
+  }
+  .tab-item {
+    padding-inline: 10px;
+    font-size: 0.7rem;
+  }
+  .device-toolbar {
+    gap: 6px;
+  }
+  #btnOrientation,
+  #btnBezel,
+  #btnFitScreen,
+  #btnToggleCustom {
+    font-size: 0.7rem;
+    padding-inline: 5px;
+  }
   .brand-name {
     font-size: 0.95rem;
   }
