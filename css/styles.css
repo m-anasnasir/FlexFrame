@@ -403,7 +403,16 @@ body > * { position: relative; z-index: 1; }
 }
 .tab-item.active::after { transform: scaleX(1); }
 
-.tab-item .tab-icon { font-size: 0.95rem; }
+.tab-item .tab-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  font-size: 0.75rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* ═══════════════════════════════════════════════════════════════════════════
    DEVICE TOOLBAR
@@ -1831,7 +1840,10 @@ kbd {
     scroll-snap-align: start;
   }
   .tab-item .tab-icon {
-    font-size: 0.85rem;
+    width: 14px;
+    height: 14px;
+    flex-basis: 14px;
+    font-size: 0.68rem;
   }
 
   /* Device Toolbar */
